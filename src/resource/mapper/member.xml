@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- //namespace는 다른 매퍼와 구분하는 역할 //명칭은 아무렇게나 해도댄대 //하지만 권장명칭은 해당 dao의 완전한 
+	이름 -->
+<mapper namespace="com.study.member.dao.IMemberDao">
+	<select id="getMemberList" parameterType="com.study.member.vo.MemberSearch"
+		resultType="com.study.member.vo.Member">
+
+		<include refid="common.prePaging" />
+		SELECT mem_id
+		, mem_name
+		, mem_pwd
+		, mem_phone
+		, mem_email
+		,
+		TO_CHAR(reg_date, 'YYYY/MM/DD') AS reg_date
+		from tb_member1
+		<include refid="common.postPaging" />
+
+	</select>
+	<select id="getMember" parameterType="String"
+		resultType="member">
+
+		SELECT
+		mem_id
+		, mem_name
+		, mem_pwd
+		, mem_phone
+		, mem_email
+		,
+		TO_CHAR(reg_date, 'YYYY/MM/DD HH24:MI') AS reg_date
+
+		from tb_member1
+		where mem_id = #{mem_id}
+
+	</select>
+
+	<update id="updateMember" parameterType="com.study.member.vo.Member" >
+		update tb_member1
+		set mem_name = #{mem_name}
+		, mem_pwd = #{mem_pwd}
+		, mem_phone = #{mem_phone}
+		, mem_email = #{mem_email}
+		where mem_id = #{mem_id}
+
+	</update>
+
+	<select id="getMemberCount" resultType="int" parameterType="member">
+		Select count(*) as mem_id from tb_member1
+	</select>
+
+</mapper>
